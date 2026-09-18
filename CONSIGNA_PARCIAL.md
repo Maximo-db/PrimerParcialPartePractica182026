@@ -35,103 +35,134 @@ Tu objetivo en esta parte del exámen es actuar como **Revisor Senior de Código
 Completá la siguiente tabla para cada uno de los 10 errores encontrados:
 
 ### Error 1
-- **Archivo y línea aproximada:** `...`
-- **Concepto evaluado (Ejercicio de la guía):** `...`
-- **¿Por qué es un error conceptual / de lógica?:** `...`
+- **Archivo y línea aproximada:** `PokemonScree.kt Línea 38`
+- **Concepto evaluado (Ejercicio de la guía):** `mutableStateOf y recomposición`
+- **¿Por qué es un error conceptual / de lógica?:** `Al establecer que la variable de busqueda sea igual a "" en cada recomposición se va a borrar o directamente no dejará escribir en la barra de navegación`
 - **Código de corrección:**
 ```kotlin
-// Escribí aquí tu corrección
+var busqueda by remember { mutableStateOf("") }
 ```
 
 ### Error 2
-- **Archivo y línea aproximada:** `...`
-- **Concepto evaluado (Ejercicio de la guía):** `...`
-- **¿Por qué es un error conceptual / de lógica?:** `...`
+- **Archivo y línea aproximada:** `PokemonScreen.kt Línea 58`
+- **Concepto evaluado (Ejercicio de la guía):** `Condiciones de búsqueda`
+- **¿Por qué es un error conceptual / de lógica?:** `En el ejercicio se establece explícitamente que la búsqueda de un Pokemon se puede hacer mediante su nombre O su id de pokedex, pero en el código el filtrado requiere que  se establezca la ID Y el nombre para encontrar un pokemon`
 - **Código de corrección:**
 ```kotlin
-// Escribí aquí tu corrección
+pokemon.name.contains(busqueda, ignoreCase = true) || (idFiltro != null && pokemon.id == idFiltro)
 ```
 
 ### Error 3
-- **Archivo y línea aproximada:** `...`
-- **Concepto evaluado (Ejercicio de la guía):** `...`
-- **¿Por qué es un error conceptual / de lógica?:** `...`
+- **Archivo y línea aproximada:** `PokemonScreen.kt Línea 195`
+- **Concepto evaluado (Ejercicio de la guía):** `Listas y maneras de eliminar`
+- **¿Por qué es un error conceptual / de lógica?:** `Se vé en el código que cuando yo hago click en el botón de liberar en un pokemón en vez de eliminar el pokemon al que le hice click elimina automáticamente el primero pokemón que haya capturado`
 - **Código de corrección:**
 ```kotlin
-// Escribí aquí tu corrección
+capturados.removeAll { it.id == pokemon.id }
 ```
 
 ### Error 4
-- **Archivo y línea aproximada:** `...`
-- **Concepto evaluado (Ejercicio de la guía):** `...`
-- **¿Por qué es un error conceptual / de lógica?:** `...`
+- **Archivo y línea aproximada:** `PokemonScreen.kt Línea 157`
+- **Concepto evaluado (Ejercicio de la guía):** `Eventos onClick`
+- **¿Por qué es un error conceptual / de lógica?:** `En la sección de Card se establece un modifier clickable, el cuál muestra como si la tarjeta de cada pokemon hiciera algo cuando se clickea pero en realidad no hace nada.`
 - **Código de corrección:**
 ```kotlin
-// Escribí aquí tu corrección
+Se podría agregar otra función que se acceda clickeando la tarjeta, o eliminar el modifier ya que cuenta como código muerto
 ```
 
 ### Error 5
-- **Archivo y línea aproximada:** `...`
-- **Concepto evaluado (Ejercicio de la guía):** `...`
-- **¿Por qué es un error conceptual / de lógica?:** `...`
+- **Archivo y línea aproximada:** `PokemonScreen.kt Línea 121`
+- **Concepto evaluado (Ejercicio de la guía):** `Intent y contexts`
+- **¿Por qué es un error conceptual / de lógica?:** `Un Action_Send necesita un type que resuelva que apps pueden manejarlo. En el código no se establece lo cual puede llevar a que falle.`
 - **Código de corrección:**
 ```kotlin
-// Escribí aquí tu corrección
+val sendIntent = Intent(Intent.ACTION_SEND).apply {
+    type = "text/plain"
+    putExtra(Intent.EXTRA_TEXT, "¡He capturado ${capturados.size} Pokémon en mi Pokédex!")
+}
 ```
 
 ### Error 6
-- **Archivo y línea aproximada:** `...`
-- **Concepto evaluado (Ejercicio de la guía):** `...`
-- **¿Por qué es un error conceptual / de lógica?:** `...`
+- **Archivo y línea aproximada:** `PokemonScreen.kt Línea 145`
+- **Concepto evaluado (Ejercicio de la guía):** `LazyColumn`
+- **¿Por qué es un error conceptual / de lógica?:** `Al no establecer una key para la lazy column compose va a identificar cada ítem por su posición en la lista, no por su veradera identidad que en este caso sería la ID `
 - **Código de corrección:**
 ```kotlin
-// Escribí aquí tu corrección
+items(
+    items = listaFiltrada,
+    key = { pokemon -> pokemon.id }
+) { pokemon ->
+    ...
+}
 ```
 
 ### Error 7
-- **Archivo y línea aproximada:** `...`
-- **Concepto evaluado (Ejercicio de la guía):** `...`
-- **¿Por qué es un error conceptual / de lógica?:** `...`
+- **Archivo y línea aproximada:** `strings.xml`
+- **Concepto evaluado (Ejercicio de la guía):** `Separacion de responsabilidades`
+- **¿Por qué es un error conceptual / de lógica?:** `Podemos ver que casi todos los textos están "hardcodeados" dentro de los archivos, cuando en realidad deberían estar en recursos y ser llamados a partir de referencias por el código cuando sea necesario. Hacerlo de esta manera conlleva muchos problemas como tenér que recompilar cada vez que se haga un cambio  o tener que buscar el texto por todo tu código, además de la consistencia de este.`
 - **Código de corrección:**
 ```kotlin
-// Escribí aquí tu corrección
+<resources>
+    <string name="app_name">PokeCompose</string>
+    <string name="titulo_pokedex">Pokédex Kanto &amp; Johto</string>
+    <string name="hint_buscar">Buscar por nombre o número…</string>
+    <string name="label_capturados">Capturados: %1$d de %2$d</string>
+    <string name="label_faltantes">Faltan capturar: %1$d Pokémon</string>
+    <string name="label_progreso">Progreso de Pokédex: %1$s%%</string>
+    <string name="boton_compartir">Compartir mi equipo</string>
+    <string name="boton_capturar">Capturar</string>
+    <string name="boton_liberar">Liberar</string>
+    <string name="mensaje_compartir">¡He capturado %1$d Pokémon en mi Pokédex!</string>
+</resources>
 ```
 
 ### Error 8
-- **Archivo y línea aproximada:** `...`
-- **Concepto evaluado (Ejercicio de la guía):** `...`
-- **¿Por qué es un error conceptual / de lógica?:** `...`
+- **Archivo y línea aproximada:** `PokemonLogic.kt Línea 21`
+- **Concepto evaluado (Ejercicio de la guía):** `Operaciones con variables`
+- **¿Por qué es un error conceptual / de lógica?:** `Se puede ver en la función que al hacer la cuenta de la cantidad de pokemones restantes para alcanzar el 100% de la pokedex los operadores se encuentran invertidos dando como resultado un número negativo`
 - **Código de corrección:**
 ```kotlin
-// Escribí aquí tu corrección
+fun calcularRestantes(total: Int, capturados: Int): Int {
+    return total - capturados
+}
 ```
 
 ### Error 9
-- **Archivo y línea aproximada:** `...`
-- **Concepto evaluado (Ejercicio de la guía):** `...`
-- **¿Por qué es un error conceptual / de lógica?:** `...`
+- **Archivo y línea aproximada:** `PokemonLogic.kt Línea 27`
+- **Concepto evaluado (Ejercicio de la guía):** `When/In y rangos`
+- **¿Por qué es un error conceptual / de lógica?:** `En el código se ve que el primer rango para la región de Kanto es equivocado, ya que al ser de 1 a 251 cubre también toda el rango de Johto`
 - **Código de corrección:**
 ```kotlin
-// Escribí aquí tu corrección
+fun clasificarGeneracion(id: Int): String {
+    return when (id) {
+        in 1..151 -> "Kanto (Gen 1)"
+        in 152..251 -> "Johto (Gen 2)"
+        else -> "Desconocida"
+    }
+}
 ```
 
 ### Error 10
-- **Archivo y línea aproximada:** `...`
-- **Concepto evaluado (Ejercicio de la guía):** `...`
-- **¿Por qué es un error conceptual / de lógica?:** `...`
+- **Archivo y línea aproximada:** `PokemonLogic.kt Línea 18`
+- **Concepto evaluado (Ejercicio de la guía):** `Conversión de tipos`
+- **¿Por qué es un error conceptual / de lógica?:** `Al hacer la división entre dos números que son enteros no va a dar como resultado un entero, por lo tanto, por más de que luego lo pase a Double, el resultado siempre va a devolver .00`
 - **Código de corrección:**
 ```kotlin
-// Escribí aquí tu corrección
+fun calcularPorcentajeProgreso(capturados: Int, total: Int): Double {
+    if (total == 0) return 0.0
+    return (capturados.toDouble() / total.toDouble()) * 100
+}
 ```
+
 
 ## 5. Registro a completar sobre el uso de Asistentes de IA
 
 Si utilizaste asistentes de Inteligencia Artificial para consultar dudas conceptuales, completá el siguiente registro:
 
 ### Registro de Uso de IA
-- **1. Problema o duda conceptual:** `...`
-- **2. Prompt enviado a la IA:** `...`
-- **3. Explicación útil que aportó:** `...`
-- **4. Decisión y código propio aplicado:** `...`
+- **1. Problema o duda conceptual:** `Como principio envié los archivos relevantes a la IA y le pedí de manera explícita comenzar con PokemonScreen marcando los errores que identifque. Ignorá cualquier "bomba" lógica que encuentres y no me muestres la respuesta hasta que yo no te lo pida`
+- **2. Prompt enviado a la IA:** `Te envié los archivos necesario para mi práctica de parcial, podés ver la consigna en el archivo "Consigna_Parcial", empecemos buscando errores en el archivo PokemonScreen.kt`
+- **3. Explicación útil que aportó:** `A partir de esa prompt pude identificar múltiples errores, algunos de los cuales tuve que ignorar ya que no venían a ser conocimientos que ví durante la cursada. Y problemas que ví que no entendía bien porque estaban identificados, pregunté cual era el problema y confirmé con el contenido de la guía de ejercicios`
+- **4. Decisión y código propio aplicado:** `A partir de la respuesta hecha por la IA redacté los reportes de los problemas y corregí a mano los errores que sabía como corregir. Hubo errores en los cuales le pedí ayuda para solucionarlos`
 
 > **Recordatorio:** El objetivo didáctico no es penalizar el uso de IA, sino validar que comprendas plenamente el razonamiento detrás de cada corrección aplicada.

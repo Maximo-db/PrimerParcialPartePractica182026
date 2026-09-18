@@ -35,7 +35,7 @@ Tu objetivo en esta parte del exámen es actuar como **Revisor Senior de Código
 Completá la siguiente tabla para cada uno de los 10 errores encontrados:
 
 ### Error 1
-- **Archivo y línea aproximada:** `PokemonScree.kt Línea 38`
+- **Archivo y línea aproximada:** `PokemonScreen.kt Línea 38`
 - **Concepto evaluado (Ejercicio de la guía):** `mutableStateOf y recomposición`
 - **¿Por qué es un error conceptual / de lógica?:** `Al establecer que la variable de busqueda sea igual a "" en cada recomposición se va a borrar o directamente no dejará escribir en la barra de navegación`
 - **Código de corrección:**
@@ -101,7 +101,7 @@ items(
 - **Concepto evaluado (Ejercicio de la guía):** `Separacion de responsabilidades`
 - **¿Por qué es un error conceptual / de lógica?:** `Podemos ver que casi todos los textos están "hardcodeados" dentro de los archivos, cuando en realidad deberían estar en recursos y ser llamados a partir de referencias por el código cuando sea necesario. Hacerlo de esta manera conlleva muchos problemas como tenér que recompilar cada vez que se haga un cambio  o tener que buscar el texto por todo tu código, además de la consistencia de este.`
 - **Código de corrección:**
-```kotlin
+```xml
 <resources>
     <string name="app_name">PokeCompose</string>
     <string name="titulo_pokedex">Pokédex Kanto &amp; Johto</string>
@@ -145,7 +145,7 @@ fun clasificarGeneracion(id: Int): String {
 ### Error 10
 - **Archivo y línea aproximada:** `PokemonLogic.kt Línea 18`
 - **Concepto evaluado (Ejercicio de la guía):** `Conversión de tipos`
-- **¿Por qué es un error conceptual / de lógica?:** `Al hacer la división entre dos números que son enteros no va a dar como resultado un entero, por lo tanto, por más de que luego lo pase a Double, el resultado siempre va a devolver .00`
+- **¿Por qué es un error conceptual / de lógica?:** `Al hacer la división entre dos números que son enteros nos va a dar como resultado un entero, por lo tanto, por más de que luego lo pase a Double, el resultado siempre va a devolver .00`
 - **Código de corrección:**
 ```kotlin
 fun calcularPorcentajeProgreso(capturados: Int, total: Int): Double {
